@@ -28,13 +28,13 @@ func NewLogger(
 	warningHandle io.Writer,
 	errorHandle io.Writer) *Logger {
 
-	trace := log.New(traceHandle, "TRC: ", log.Ldate|log.Ltime|log.Lshortfile)
-	debug := log.New(traceHandle, "DBG: ", log.Ldate|log.Ltime|log.Lshortfile)
-	info := log.New(infoHandle, "INF: ", log.Ldate|log.Ltime|log.Lshortfile)
-	warning := log.New(warningHandle, "WRN: ", log.Ldate|log.Ltime|log.Lshortfile)
-	err := log.New(errorHandle, "ERR: ", log.Ldate|log.Ltime|log.Lshortfile)
-
-	return &Logger{trace, debug, info, warning, err}
+	return &Logger{
+		Trace:   log.New(traceHandle, "TRC: ", log.Ldate|log.Ltime|log.Lshortfile),
+		Debug:   log.New(traceHandle, "DBG: ", log.Ldate|log.Ltime|log.Lshortfile),
+		Info:    log.New(infoHandle, "INF: ", log.Ldate|log.Ltime|log.Lshortfile),
+		Warning: log.New(warningHandle, "WRN: ", log.Ldate|log.Ltime|log.Lshortfile),
+		Error:   log.New(errorHandle, "ERR: ", log.Ldate|log.Ltime|log.Lshortfile),
+	}
 }
 
 func NewStdLogger() *Logger {
