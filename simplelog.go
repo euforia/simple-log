@@ -13,6 +13,53 @@ import (
 	"os"
 )
 
+var (
+	Trace   = log.New(os.Stdout, "TRC: ", log.Ldate|log.Ltime|log.Lshortfile)
+	Debug   = log.New(os.Stdout, "DBG: ", log.Ldate|log.Ltime|log.Lshortfile)
+	Info    = log.New(os.Stdout, "INF: ", log.Ldate|log.Ltime|log.Lshortfile)
+	Warning = log.New(os.Stdout, "WRN: ", log.Ldate|log.Ltime|log.Lshortfile)
+	Error   = log.New(os.Stderr, "ERR: ", log.Ldate|log.Ltime|log.Lshortfile)
+)
+
+func resetLogLevel() {
+	Trace = log.New(os.Stdout, "TRC: ", log.Ldate|log.Ltime|log.Lshortfile)
+	Debug = log.New(os.Stdout, "DBG: ", log.Ldate|log.Ltime|log.Lshortfile)
+	Info = log.New(os.Stdout, "INF: ", log.Ldate|log.Ltime|log.Lshortfile)
+	Warning = log.New(os.Stdout, "WRN: ", log.Ldate|log.Ltime|log.Lshortfile)
+	Error = log.New(os.Stderr, "ERR: ", log.Ldate|log.Ltime|log.Lshortfile)
+}
+
+func SetLogLevel(level string) error {
+	resetLogLevel()
+
+	switch level {
+	case "trace":
+		break
+	case "debug":
+		Trace = log.New(ioutil.Discard, "TRC: ", log.Ldate|log.Ltime|log.Lshortfile)
+		break
+	case "info":
+		Trace = log.New(ioutil.Discard, "TRC: ", log.Ldate|log.Ltime|log.Lshortfile)
+		Debug = log.New(ioutil.Discard, "DBG: ", log.Ldate|log.Ltime|log.Lshortfile)
+		break
+	case "warning":
+		Trace = log.New(ioutil.Discard, "TRC: ", log.Ldate|log.Ltime|log.Lshortfile)
+		Debug = log.New(ioutil.Discard, "DBG: ", log.Ldate|log.Ltime|log.Lshortfile)
+		Info = log.New(ioutil.Discard, "INF: ", log.Ldate|log.Ltime|log.Lshortfile)
+		break
+	case "error":
+		Trace = log.New(ioutil.Discard, "TRC: ", log.Ldate|log.Ltime|log.Lshortfile)
+		Debug = log.New(ioutil.Discard, "DBG: ", log.Ldate|log.Ltime|log.Lshortfile)
+		Info = log.New(ioutil.Discard, "INF: ", log.Ldate|log.Ltime|log.Lshortfile)
+		Warning = log.New(ioutil.Discard, "WRN: ", log.Ldate|log.Ltime|log.Lshortfile)
+		break
+	default:
+		return errors.New(fmt.Sprintf("Invalid log level: %s", level))
+	}
+	return nil
+}
+
+// For backward compatibility
 type Logger struct {
 	Trace   *log.Logger
 	Debug   *log.Logger
